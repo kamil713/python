@@ -1,16 +1,16 @@
-# This is a sample Python script.
+import requests
+import json
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+categories = ['General Knowledge', 'Sport', 'Animals',
+              'Entertainment: Video Games', 'Science: Computers']
+print(categories)
+selectCategory = input('Select category: ')
 
+URL = f'https://opentdb.com/api.php?amount=3&category=9&difficulty=easy&type=multiple'
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+response = requests.get(URL)
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+if response.status_code != requests.codes.ok:
+    print('Coś poszło nie tak')
+else:
+    print(json.dumps(response.json(), indent=4))
