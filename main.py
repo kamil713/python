@@ -1,16 +1,30 @@
-import requests
+import connect_to_api
+import nanoid
 import json
 
-categories = ['General Knowledge', 'Sport', 'Animals',
-              'Entertainment: Video Games', 'Science: Computers']
-print(categories)
-selectCategory = input('Select category: ')
 
-URL = f'https://opentdb.com/api.php?amount=3&category=9&difficulty=easy&type=multiple'
+def setting_answers(answers, correct_answer):
+    answers_list = []
+    for answer in answers:
+        d = dict()
+        d['answer'] = answer
+        d['correct'] = True if answer == correct_answer else False
+        answers_list.append(d)
+    return answers_list
 
-response = requests.get(URL)
 
-if response.status_code != requests.codes.ok:
-    print('Coś poszło nie tak')
-else:
-    print(json.dumps(response.json(), indent=4))
+newData = []
+for item in connect_to_api.data['results']:
+    d = dict()
+    d['id'] = nanoid.generate(size=10)
+    d['question'] = item['question']
+    all_answers = item['incorrect_answers'] + [item['correct_answer']]
+    all_answers.sort()
+    d['answers'] = setting_answers(all_answers, item['correct_answer'])
+    newData.append(d)
+
+
+#print(type(newData))
+#print(newData)
+
+print(json.dumps(newData, indent=2))
