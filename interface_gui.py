@@ -5,10 +5,12 @@ import json
 # print(json.dumps(main.newData[0], indent=2))
 
 test123 = []
-for answer in main.newData:
-    test123.append(answer['question'])
+for data in main.newData:
+    test123.append(data['category'])
+    category_of_quiz = data['category']
 
-# print(test123)
+print(category_of_quiz)
+print(test123)
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("green")
@@ -63,7 +65,7 @@ title = customtkinter.CTkLabel(master=frame, text="QUIZ GAME", font=("Roboto", 3
 title.pack(pady=12, padx=10)
 
 # KATEGORIA
-category = customtkinter.CTkLabel(master=frame, text="CATEGORY", font=("Roboto", 16))
+category = customtkinter.CTkLabel(master=frame, text=category_of_quiz, font=("Roboto", 16))
 category.place(x=600, y=25)
 
 # QUIZ
