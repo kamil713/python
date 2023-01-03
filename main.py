@@ -2,6 +2,8 @@ import connect_to_api
 import nanoid
 import json
 
+d = dict()
+
 
 def setting_answers(answers, correct_answer):
     answers_list = []
@@ -15,16 +17,15 @@ def setting_answers(answers, correct_answer):
 
 newData = []
 for item in connect_to_api.data['results']:
-    d = dict()
     d['id'] = nanoid.generate(size=10)
+    d['category'] = item['category']
     d['question'] = item['question']
     all_answers = item['incorrect_answers'] + [item['correct_answer']]
     all_answers.sort()
     d['answers'] = setting_answers(all_answers, item['correct_answer'])
     newData.append(d)
 
+# print(type(newData))
+# print(newData)
 
-#print(type(newData))
-#print(newData)
-
-print(json.dumps(newData, indent=2))
+#print(json.dumps(newData, indent=2))
