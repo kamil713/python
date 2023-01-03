@@ -1,26 +1,75 @@
-import tkinter  # moduł do tworzenia interfejsów graficznych
+import customtkinter
+import main
+import json
 
-root = tkinter.Tk()  # tworzymy okienko
-root.geometry('880x480') # rozmiar okna naszej aplikacji
+# print(json.dumps(main.newData[0], indent=2))
 
-# dostawiamy etykiete do okienka root, drugi argument odpowiada za to co przedstawia etykieta
-# przypisujemy do zmiennej bo będziemy używać wiecej etykiet (czytelnosc itd.)
-l = tkinter.Label(root, text='Aplikacja')
-# funkcja pack aby etykieta pojawila sie w naszym okienku
-l.pack()
+test123 = []
+for answer in main.newData:
+    test123.append(answer['question'])
 
-def funkcjaPrzycisku():
-    print('Wcisnieto przycisk')
+# print(test123)
 
-# jak wyzej tylko dostawiamy przycisk zamiast etykiety do okna naszej aplikacji
-# command wywoluje konkretna funkcje po wcisnieciu przycisku
-# parametry jak width, bg, fg styluja nasz przycisk
-b = tkinter.Button(root, text='Jestem Przyciskiem', width=20, bg='red', fg='blue', command=funkcjaPrzycisku)
-# jak wyzej, side ustawia przycisk na konkretnej pozycji
-#b.pack(side=tkinter.RIGHT)
-# ustawiamy element naszej aplikacji wedlug konkretnych wspolrzednych
-b.place(x=230, y=230)
+customtkinter.set_appearance_mode("dark")
+customtkinter.set_default_color_theme("green")
 
-root.mainloop()  # metoda mainloop blokuje okienko przed zamknieciem
+root = customtkinter.CTk()
+root.geometry("900x600")
 
 
+def initialize_question_labes():
+    questions = []
+
+    for data in main.newData:
+        questions.append(customtkinter.CTkLabel(master=frame, text=data['question'], font=("Roboto", 16)))
+
+    for i in range(len(questions)):
+        questions[i].pack(pady=12, padx=10)
+
+    return questions
+
+
+def initialize_quiz():
+    questions = []
+    answers = []
+    quiz_boxes = []
+
+    for data in main.newData:
+        if answers:
+            quiz_boxes.append(customtkinter.CTkComboBox(frame, values=answers))
+        answers.clear()
+        quiz_boxes.append(customtkinter.CTkLabel(master=frame, text=data['question'], font=("Roboto", 14)))
+        for answer in data['answers']:
+            answers.append(answer['answer'])
+
+    quiz_boxes.append(customtkinter.CTkComboBox(frame, values=answers))
+
+    for i in range(len(quiz_boxes)):
+        print()
+        quiz_boxes[i].pack(pady=12, padx=10)
+
+    return quiz_boxes
+
+
+def login():
+    print('dupa')
+
+
+frame = customtkinter.CTkFrame(master=root)
+frame.pack(pady=20, padx=60, fill="both", expand=True)
+
+# TYTUŁ
+title = customtkinter.CTkLabel(master=frame, text="QUIZ GAME", font=("Roboto", 36))
+title.pack(pady=12, padx=10)
+
+# KATEGORIA
+category = customtkinter.CTkLabel(master=frame, text="CATEGORY", font=("Roboto", 16))
+category.place(x=600, y=25)
+
+# QUIZ
+initialize_quiz()
+
+button = customtkinter.CTkButton(master=frame, text="Check answers", command=login)
+button.pack(pady=12, padx=10)
+
+root.mainloop()
