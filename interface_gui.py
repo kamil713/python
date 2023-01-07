@@ -4,10 +4,12 @@ import json
 
 # print(json.dumps(main.newData[0], indent=2))
 
+ids = []
 test123 = []
 for data in main.newData:
     test123.append(data['category'])
     category_of_quiz = data['category']
+    ids.append(data['id'])
 
 #print(category_of_quiz)
 #print(test123)
@@ -23,11 +25,21 @@ root.geometry("900x600")
 
 user_answers = []
 def value_changed(choice):
-    user_answers.append(choice)
+    user_answers.clear()
+    count = 0
+
+    answers_handler = [combobox_1.get(), combobox_2.get(), combobox_3.get()]
+
+    for id in ids:
+        user_answers.append([id, answers_handler[count]])
+        count += 1
     print(user_answers)
 
 
 quiz_boxes = []
+combobox_1 = customtkinter.StringVar(value="Choose correct answer...")
+combobox_2 = customtkinter.StringVar(value="Choose correct answer...")
+combobox_3 = customtkinter.StringVar(value="Choose correct answer...")
 def initialize_quiz():
     answers = []
 
@@ -48,6 +60,9 @@ def initialize_quiz():
         #if isinstance(quiz_boxes[i], customtkinter.CTkComboBox):
             #quiz_boxes[i].bind('<Leave>', value_changed)
 
+    quiz_boxes[1].configure(variable=combobox_1)
+    quiz_boxes[3].configure(variable=combobox_2)
+    quiz_boxes[5].configure(variable=combobox_3)
 
     return quiz_boxes
 
@@ -64,6 +79,7 @@ def finish_game():
     if len(user_answers) == 3:
         result.pack(pady=12, padx=10)
         change_state()
+
     else:
         error.pack(pady=12, padx=10)
         error.after(1000, lambda: error.destroy())
