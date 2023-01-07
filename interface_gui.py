@@ -51,7 +51,11 @@ def initialize_quiz():
 
     return quiz_boxes
 
-
+def change_state():
+    if button.cget("state") == 'normal':
+        button.configure(state='disabled')
+    else:
+        button.configure(state='normal')
 
 
 frame = customtkinter.CTkFrame(master=root)
