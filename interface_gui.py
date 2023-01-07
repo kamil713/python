@@ -9,8 +9,11 @@ for data in main.newData:
     test123.append(data['category'])
     category_of_quiz = data['category']
 
-print(category_of_quiz)
-print(test123)
+#print(category_of_quiz)
+#print(test123)
+#print(json.dumps(main.newData, indent=2))
+
+#tu zrobic tablice
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("green")
@@ -18,43 +21,37 @@ customtkinter.set_default_color_theme("green")
 root = customtkinter.CTk()
 root.geometry("900x600")
 
-
-def initialize_question_labes():
-    questions = []
-
-    for data in main.newData:
-        questions.append(customtkinter.CTkLabel(master=frame, text=data['question'], font=("Roboto", 16)))
-
-    for i in range(len(questions)):
-        questions[i].pack(pady=12, padx=10)
-
-    return questions
+user_answers = []
+def value_changed(choice):
+    user_answers.append(choice)
+    print(user_answers)
 
 
+quiz_boxes = []
 def initialize_quiz():
-    questions = []
     answers = []
-    quiz_boxes = []
 
+    # state='disabled'
     for data in main.newData:
         if answers:
-            quiz_boxes.append(customtkinter.CTkComboBox(frame, values=answers))
+            quiz_boxes.append(customtkinter.CTkComboBox(frame, values=answers, command=value_changed))
         answers.clear()
         quiz_boxes.append(customtkinter.CTkLabel(master=frame, text=data['question'], font=("Roboto", 14)))
         for answer in data['answers']:
             answers.append(answer['answer'])
 
-    quiz_boxes.append(customtkinter.CTkComboBox(frame, values=answers))
+    quiz_boxes.append(customtkinter.CTkComboBox(frame, values=answers, command=value_changed))
 
     for i in range(len(quiz_boxes)):
-        print()
         quiz_boxes[i].pack(pady=12, padx=10)
+        #print(quiz_boxes[i])
+        #if isinstance(quiz_boxes[i], customtkinter.CTkComboBox):
+            #quiz_boxes[i].bind('<Leave>', value_changed)
+
 
     return quiz_boxes
 
 
-def login():
-    print('dupa')
 
 
 frame = customtkinter.CTkFrame(master=root)
@@ -66,12 +63,12 @@ title.pack(pady=12, padx=10)
 
 # KATEGORIA
 category = customtkinter.CTkLabel(master=frame, text=category_of_quiz, font=("Roboto", 16))
-category.place(x=600, y=25)
+category.place(x=550, y=22)
 
 # QUIZ
 initialize_quiz()
 
-button = customtkinter.CTkButton(master=frame, text="Check answers", command=login)
+button = customtkinter.CTkButton(master=frame, text="Check answers", command=finish_game)
 button.pack(pady=12, padx=10)
 
 root.mainloop()
