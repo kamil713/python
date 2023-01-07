@@ -59,7 +59,7 @@ def change_state():
 
 def finish_game():
     result = customtkinter.CTkLabel(master=frame, text="Your scorred 0/3 correct answers", font=("Roboto", 16))
-    error = customtkinter.CTkLabel(master=frame, text="Something went wrong", font=("Roboto", 16))
+    error = customtkinter.CTkLabel(master=frame, text="Something went wrong", text_color='red', font=("Roboto", 16))
 
     if len(user_answers) == 3:
         result.pack(pady=12, padx=10)
@@ -85,5 +85,6 @@ initialize_quiz()
 
 button = customtkinter.CTkButton(master=frame, text="Check answers", command=finish_game)
 button.pack(pady=12, padx=10)
+
 
 root.mainloop()
