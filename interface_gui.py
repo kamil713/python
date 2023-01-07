@@ -7,7 +7,7 @@ import json
 ids = []
 test123 = []
 for data in main.newData:
-    test123.append(data['category'])
+    #test123.append(data['answers'])
     category_of_quiz = data['category']
     ids.append(data['id'])
 
@@ -72,13 +72,31 @@ def change_state():
     else:
         button.configure(state='normal')
 
+score = 0
+def check_answers():
+    global score
+    counter = 0
+    for data in main.newData:
+        if data['id'] == user_answers[counter][0]:
+            print(data['answers'])
+            for answer in data['answers']:
+                if answer['answer'] == user_answers[counter][1] and answer['correct']:
+                    score += 1;
+        if (counter != 3):
+            counter += 1
+
+    print(score)
+
+
 def finish_game():
-    result = customtkinter.CTkLabel(master=frame, text="Your scorred 0/3 correct answers", font=("Roboto", 16))
     error = customtkinter.CTkLabel(master=frame, text="Something went wrong", text_color='red', font=("Roboto", 16))
 
     if len(user_answers) == 3:
-        result.pack(pady=12, padx=10)
         change_state()
+        check_answers()
+        result = customtkinter.CTkLabel(master=frame, text=f"Your scorred {score}/3 correct answers",
+                                        font=("Roboto", 16))
+        result.pack(pady=12, padx=10)
 
     else:
         error.pack(pady=12, padx=10)
