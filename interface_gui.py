@@ -1,21 +1,10 @@
 import customtkinter
 import main
-import json
-
-# print(json.dumps(main.newData[0], indent=2))
 
 ids = []
-test123 = []
 for data in main.newData:
-    # test123.append(data['answers'])
     category_of_quiz = data['category']
     ids.append(data['id'])
-
-# print(category_of_quiz)
-# print(test123)
-# print(json.dumps(main.newData, indent=2))
-
-# tu zrobic tablice
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("green")
@@ -24,9 +13,9 @@ root = customtkinter.CTk()
 root.geometry("900x600")
 
 user_answers = []
-
-
+answers_handler = []
 def value_changed(choice):
+    global answers_handler
     user_answers.clear()
     count = 0
 
@@ -42,12 +31,9 @@ quiz_boxes = []
 combobox_1 = customtkinter.StringVar(value="Choose correct answer...")
 combobox_2 = customtkinter.StringVar(value="Choose correct answer...")
 combobox_3 = customtkinter.StringVar(value="Choose correct answer...")
-
-
 def initialize_quiz():
     answers = []
 
-    # state='disabled'
     for data in main.newData:
         if answers:
             quiz_boxes.append(customtkinter.CTkComboBox(frame, values=answers, command=value_changed))
@@ -60,9 +46,6 @@ def initialize_quiz():
 
     for i in range(len(quiz_boxes)):
         quiz_boxes[i].pack(pady=12, padx=10)
-        # print(quiz_boxes[i])
-        # if isinstance(quiz_boxes[i], customtkinter.CTkComboBox):
-        # quiz_boxes[i].bind('<Leave>', value_changed)
 
     quiz_boxes[1].configure(variable=combobox_1)
     quiz_boxes[3].configure(variable=combobox_2)
@@ -113,7 +96,14 @@ def change_styles():
 def finish_game():
     error = customtkinter.CTkLabel(master=frame, text="Something went wrong", text_color='red', font=("Roboto", 16))
 
-    if len(user_answers) == 3:
+    checker = 0
+    for a in answers_handler:
+        print(a)
+        if a != 'Choose correct answer...':
+            checker += 1
+
+    print(checker)
+    if checker == 3:
         change_state()
         check_answers()
         change_styles()
